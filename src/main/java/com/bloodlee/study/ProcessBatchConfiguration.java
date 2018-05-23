@@ -65,7 +65,6 @@ public class ProcessBatchConfiguration {
     	Tasklet tasklet = new Tasklet() {
 			@Override
 			public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-				// TODO Auto-generated method stub
 				log.info("step2 tasklet");
 				return RepeatStatus.FINISHED;
 			}
