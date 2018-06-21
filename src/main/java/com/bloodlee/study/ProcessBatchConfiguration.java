@@ -38,7 +38,7 @@ public class ProcessBatchConfiguration {
 
     @Bean
     public Job importUserJob(JobCompletionNotificationListener listener, Step step1, Step step2) {
-    	log.info("importUserJob");
+    	log.info("=====> importUserJob");
         return jobBuilderFactory.get("importUserJob")
             .incrementer(new RunIdIncrementer())
             .listener(listener)
@@ -50,7 +50,7 @@ public class ProcessBatchConfiguration {
 
     @Bean
     public Step step1(JdbcBatchItemWriter<Person> writer) {
-    	log.info("step1");
+    	log.info("=====> step1");
         return stepBuilderFactory.get("step1")
             .<Person, Person> chunk(10)
             .reader(reader())
@@ -61,11 +61,11 @@ public class ProcessBatchConfiguration {
 
     @Bean
     public Step step2() {
-    	log.info("step2");
+    	log.info("=====> step2");
     	Tasklet tasklet = new Tasklet() {
 			@Override
 			public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-				log.info("step2 tasklet");
+				log.info("=====> step2 tasklet");
 				return RepeatStatus.FINISHED;
 			}
 		};
@@ -76,7 +76,7 @@ public class ProcessBatchConfiguration {
 
     @Bean
     public FlatFileItemReader<Person> reader() {
-    	log.info("reader");
+    	log.info("=====> reader");
         return new FlatFileItemReaderBuilder<Person>()
             .name("personItemReader")
             .resource(new ClassPathResource("sample-data.txt"))
@@ -90,13 +90,13 @@ public class ProcessBatchConfiguration {
 
     @Bean
     public PersonItemProcessor processor() {
-    	log.info("processor");
+    	log.info("=====> processor");
         return new PersonItemProcessor();
     }
 
     @Bean
     public JdbcBatchItemWriter<Person> writer(DataSource dataSource) {
-    	log.info("writer");
+    	log.info("=====> writer");
         return new JdbcBatchItemWriterBuilder<Person>()
             .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
             .sql("INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)")
